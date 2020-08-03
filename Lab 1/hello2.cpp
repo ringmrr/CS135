@@ -11,7 +11,7 @@ Michael Ring        2020-07-23     0.1 - Created files, copied headers
 Michael Ring        2020-07-23     1.0 - Wrote source code from hello2.gif
 Michael Ring        2020-07-23     1.1 - Added comments
 Michael Ring        2020-07-23     1.2 - Fixed divide by zero bug
-Michael Ring        2020-07-23     1.3 - 
+Michael Ring        2020-08-02     1.3 - Added if-else fix for 
 --------------------------------------------------------------------------------------------------*/
 
 #include <iostream>
@@ -58,6 +58,7 @@ int main()
     y = -2;             // ints and dividing    
     z = x / y;          // x by y to assign z
 
+    
     cout << "x / y = " << x << " / " << y << " = " << z << endl << endl;
     // Print division and result
 
