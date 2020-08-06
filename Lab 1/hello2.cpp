@@ -11,7 +11,8 @@ Michael Ring        2020-07-23     0.1 - Created files, copied headers
 Michael Ring        2020-07-23     1.0 - Wrote source code from hello2.gif
 Michael Ring        2020-07-23     1.1 - Added comments
 Michael Ring        2020-07-23     1.2 - Fixed divide by zero bug
-Michael Ring        2020-08-02     1.3 - Added if-else fix for 
+Michael Ring        2020-08-02     1.3 - Added if-else fix for negative input. It only works once.
+Michael Ring        2020-08-05     1.4 - Changed if-else to while loop. It only catches -1.
 --------------------------------------------------------------------------------------------------*/
 
 #include <iostream>
