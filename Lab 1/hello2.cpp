@@ -32,14 +32,19 @@ NOTES:              Optional notes on this function
 int main()
 {
     string firstName;   // Declaring variables
-    string eyeColor;    // strings will be input by user
-    unsigned int x;     // integers will be input by me for testing
+    string eyeColor;    // strings will be text responses from user
+    unsigned int x;     // integers will be numbers input for math operation 
     unsigned int y;
     unsigned int z;
 
+    //  GREETING
+
     cout << "Hello, world!" << endl << endl << endl;               
     // Print welcome message
+    
 
+    //  NAME
+    
     cout << "What is your name?   ";
     // Asks user to input name
     cin >> firstName;
@@ -47,18 +52,32 @@ int main()
     cout << "Hello, " << firstName << "!" << endl << endl;
     // Greets the user by name by using the variable
 
+
+    //  EYE COLOR
+
     cout << "What color are your eyes, " << firstName << "?   ";
     // Asks the user by name to input eye color
     cin >> eyeColor;
     // Stores it as variable eyeColor
     cout << "Your eyes are " << eyeColor << "." << endl << endl;
-    // Repeats the eye color to the user.
+    // Repeats the eye color to the user
 
-    x = 5;              // Assigning values to 
-    y = -2;             // ints and dividing    
-    z = x / y;          // x by y to assign z
 
+    //  MATH
     
+    cout << "Let's do some division.   x / y  =  z" << endl << endl;
+    // Shows user what the variables mean and what we'll do with them
+
+    x = 4294967295;             // Initializes while loop, which should stay open
+    y = 2;
+    while (x == 4294967295)     // in the event of int overflow (2^32 - 1)
+    {
+            cout << "What should x be? Choose a positive whole number.   ";
+            // Asks user to input dividend, guides them to stick within unsigned int paramaters
+            cin >> x;
+            // Stores it as variable x 
+    }
+
     cout << "x / y = " << x << " / " << y << " = " << z << endl << endl;
     // Print division and result
 
@@ -73,7 +92,7 @@ int main()
     // 2) What happens if you change the value of y? Try y-values of 2 and -2.
     //      
     //      The program no longer crashes, but it can give inaccurate results.
-    //      5/2=2.5 gets truncated to 2, and 5/-2=-2.5 instead returns 4294967294,
+    //      5/2=2.5 gets truncated to 2, and 5/-2=-2.5 instead returns 4,294,967,294 (interger overflow)
     //      because the integer variable only relates to whole numbers, and
     //      because unsigned variables do not accept negative values.
     //
