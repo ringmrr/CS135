@@ -12,7 +12,8 @@ Michael Ring        2020-08-27     1.0 - Wrote source code from hello2.gif
 Michael Ring        2020-08-27     1.1 - Added comments
 Michael Ring        2020-08-27     1.2 - Added if-else fix for zero input. It only works once.
 Michael Ring        2020-08-31     1.3 - Tried while loop instead of if-else. It only catches -1.
-Michael Ring        2020-09-02     1.4 - 
+Michael Ring        2020-09-02     1.4 - Deleted entire math section. Noted last name input bug.
+Michael Ring        2020-09-02     1.5 - Don't request user input. Instead, test then comment. 
 --------------------------------------------------------------------------------------------------*/
 
 #include <iostream>
@@ -53,11 +54,13 @@ int main()
     cout << "Hello, " << firstName << "!" << endl << endl;
     // Greets the user by name by using the variable
 
-    /*          ***BUG***
+
+    /*  ~~<!> BUG <!>~~
+
     Input 'Mike Ring' for firstName causes
     'Mike' to be assigned to firstName and
-    'Ring' to be assigned to eyeColor
-    */
+    'Ring' to be assigned to eyeColor   */
+
 
     //  EYE COLOR
 
@@ -70,24 +73,32 @@ int main()
 
 
     //  MATH
-    
+
     cout << "Let's do some division.   x / y  =  z" << endl << endl;
     // Shows user what the variables mean and what we'll do with them
 
-    cout << "What should x be? Choose a positive whole number.   ";
-    // Asks user to input dividend, guides them to stick within unsigned int paramaters
-    cin >> x;
-    // Stores it as variable x
-    if(x == 0)
+    x = 5;
+    y = 0;
+
+    if (x == 0) {cout << "Cannot divide by zero. Please try again." << endl;}
+    else 
     {
-
+        z = x / y;
+        // Run calculation
+        cout << "x / y = " << x << " / " << y << " = " << z << endl << endl;
+        // Share results
     }
+
+    //  THE END
     
+    cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
+    cout << __DATE__ << " " __TIME__ << endl;
+    cout << endl;
 
+    system("pause");
 
-    cout << "x / y = " << x << " / " << y << " = " << z << endl << endl;
-    // Print division and result
-
+    return 0;
+}
 
     // LAB QUESTIONS
     //
@@ -104,15 +115,6 @@ int main()
     //      because unsigned variables do not accept negative values.
     //
     // 3) Other solutions? Can you add some code to make the program "bullet-proof"?
-    //     
-    //       
-
-    
-    cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
-    cout << __DATE__ << " " __TIME__ << endl;
-    cout << endl;
-
-    system("pause");
-
-    return 0;
-}
+    //      
+    //      Due to the data type, there isn't a way to prevent inaccurate results (from negatives/decimals),
+    //      but adding an if-else statement prevents the divide by zero crash.
