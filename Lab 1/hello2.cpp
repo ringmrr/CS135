@@ -10,10 +10,9 @@ Author              Date           Version
 Michael Ring        2020-08-23     0.1 - Created files, copied headers
 Michael Ring        2020-08-27     1.0 - Wrote source code from hello2.gif
 Michael Ring        2020-08-27     1.1 - Added comments
-Michael Ring        2020-08-27     1.2 - Fixed divide by zero bug
-Michael Ring        2020-08-27     1.3 - Added if-else fix for negative input. It only works once.
-Michael Ring        2020-08-31     1.4 - Changed if-else to while loop. It only catches -1.
-Michael Ring        2020-09-02     1.5 - 
+Michael Ring        2020-08-27     1.2 - Added if-else fix for zero input. It only works once.
+Michael Ring        2020-08-31     1.3 - Tried while loop instead of if-else. It only catches -1.
+Michael Ring        2020-09-02     1.4 - 
 --------------------------------------------------------------------------------------------------*/
 
 #include <iostream>
@@ -54,6 +53,11 @@ int main()
     cout << "Hello, " << firstName << "!" << endl << endl;
     // Greets the user by name by using the variable
 
+    /*          ***BUG***
+    Input 'Mike Ring' for firstName causes
+    'Mike' to be assigned to firstName and
+    'Ring' to be assigned to eyeColor
+    */
 
     //  EYE COLOR
 
@@ -70,15 +74,16 @@ int main()
     cout << "Let's do some division.   x / y  =  z" << endl << endl;
     // Shows user what the variables mean and what we'll do with them
 
-    x = 4294967295;             // Initializes while loop, which should stay open
-    y = 2;
-    while (x == 4294967295)     // in the event of int overflow (2^32 - 1)
+    cout << "What should x be? Choose a positive whole number.   ";
+    // Asks user to input dividend, guides them to stick within unsigned int paramaters
+    cin >> x;
+    // Stores it as variable x
+    if(x == 0)
     {
-            cout << "What should x be? Choose a positive whole number.   ";
-            // Asks user to input dividend, guides them to stick within unsigned int paramaters
-            cin >> x;
-            // Stores it as variable x 
+
     }
+    
+
 
     cout << "x / y = " << x << " / " << y << " = " << z << endl << endl;
     // Print division and result
@@ -100,7 +105,7 @@ int main()
     //
     // 3) Other solutions? Can you add some code to make the program "bullet-proof"?
     //     
-    //       fuck
+    //       
 
     
     cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
