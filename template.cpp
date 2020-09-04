@@ -5,9 +5,9 @@ COMPILER:           MinGW C++ compiler
 NOTES:              Details on what this program does
 
 MODIFICATION HISTORY:
-Author              Date           Version
----------------     ----------     ---------------
-Michael Ring        2020-07-23     0.1 - Created files, copied headers
+Author              Date            Version
+---------------     ----------      ---------------
+Michael Ring        2020-07-23      0.1 - Created files, copied headers
 --------------------------------------------------------------------------------------------------*/
 
 #include <iostream>
