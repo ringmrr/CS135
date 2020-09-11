@@ -1,8 +1,8 @@
 /*--------------------------------------------------------------------------------------------------
 FILENAME:           Math1.cpp
-DESCRIPTION:        Subproject of Lab 2 & Project 1
+DESCRIPTION:        Subproject of Lab 2
 COMPILER:           MinGW C++ compiler
-NOTES:              
+NOTES:              Demonstrate integer and floating-point data types
 
 MODIFICATION HISTORY:
 Author              Date            Version
@@ -10,7 +10,8 @@ Author              Date            Version
 Michael Ring        2020-09-07      0.1 - Created files, copied headers
 Michael Ring        2020-09-07      0.2 - Copied source code, tried to compile
 Michael Ring        2020-09-10      1.0 - Uncommented #include <cmath> and compiled successfully
-Michael Ring        2020-09-10      1.1 - 
+Michael Ring        2020-09-10      1.1 - Ran program, noted y underflow in first example
+Michael Ring        2020-09-10      1.2 - Commented out other cout statements, noted in comment 
 --------------------------------------------------------------------------------------------------*/
 
 #include <iostream>
@@ -24,9 +25,9 @@ const string PROGRAMMER_NAME = "Michael Ring";
 
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           main()
-DESCRIPTION:        Say what this function does
+DESCRIPTION:        Assign values to variables and print them to user.
 RETURNS:            0
-NOTES:              Optional notes on this function
+NOTES:              
 --------------------------------------------------------------------------------------------------*/
 
 int main()
