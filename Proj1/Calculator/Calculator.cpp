@@ -8,7 +8,7 @@ MODIFICATION HISTORY:
 Author              Date            Version
 ---------------     ----------      ---------------
 Michael Ring        2020-09-23      1.0 - Copied functions from Lab 4.
-                                            >> Source code copied from:
+                                            >> SOURCE CODE COPIED FROM:
                                                 > Add_2_Numbers.gif on Canvas
                                                 > Get_mainChoice_v(1-6).gifs on Canvas
                                                 > Program 6-17 from Textbook pg. 342
@@ -28,6 +28,7 @@ Michael Ring        2020-09-24      1.4 - Added new switch to main function to c
 using namespace std;
 
 // Function prototypes
+void prMain();
 char mainMenu();
 char prMenu();
 void getXandY();      
@@ -51,6 +52,12 @@ const string PROGRAMMER_NAME = "Michael Ring";
 // Global variables
 double x, y, result;
 
+/*--------------------------------------------------------------------------------------------------
+====================================================================================================
+            DRIVER FUNCTIONS
+====================================================================================================
+--------------------------------------------------------------------------------------------------*/
+
 
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           main()
@@ -63,19 +70,18 @@ int main()
 {
     system("cls");                  // Clears the screen (nothing to clear unless opened from cmd)
 
-    char mainChoice;                    // Declares variable for menu selections
-    char prChoice;
+    char mainChoice;                // Declares variable for menu selections
 
     bool goodbye = false;           // Flag allows loop to be closed when switched to true
     while(!goodbye)                 // Open while loop to allow multiple uses without restarting
     {
-        mainChoice = mainMenu();       // Calls function mainMenu to get user's selection
+        mainChoice = mainMenu();    // Calls function mainMenu to get user's selection
         switch (mainChoice)
         {
             case 'a':
-                add();      // If mainChoice == a, call add function
+                add();              // If mainChoice == a, call add function
                 break;
-            case 'b':
+            case 'b':       
                 subtract();
                 break;
             case 'c':
@@ -91,30 +97,60 @@ int main()
                 goodbye = true;
                 break;
         }
- /*     switch (prChoice)
-        {
-            case 'a':
-                prSqrt();
-                break;
-            case 'b':
-                prCbrt();
-                break;
-            case 'c':
-                pr
-        }*/
     }                              
 
     //  GOODBYE
-
     cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
-    cout << __DATE__ << " " __TIME__ << endl;
-    cout << endl;
+    cout << __DATE__ << " " __TIME__ << endl << endl;
 
     system("pause");
-
     return 0;
 }
 
+
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           prMain()
+DESCRIPTION:        Driver function
+RETURNS:            0
+NOTES:              
+--------------------------------------------------------------------------------------------------*/
+void prMain()
+{
+    char prChoice;
+
+    bool goodbye = false;           // Flag allows loop to be closed when switched to true   
+    while(!goodbye)                 
+    {
+        prChoice = prMenu();    
+        switch (prChoice)
+        {
+            case 'a':
+                add();              
+                break;
+            case 'b':       
+                subtract();
+                break;
+            case 'c':
+                multiply();
+                break;
+            case 'd':
+                divide();
+                break;
+            case 'e':
+                prMenu();
+                break;
+            case 'q':
+                goodbye = true;
+                break;
+        }
+    }
+}
+
+/*--------------------------------------------------------------------------------------------------
+====================================================================================================
+            MENU FUNCTIONS
+====================================================================================================
+--------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           mainMenu()
@@ -237,6 +273,12 @@ void getXandY()
 
 
 /*--------------------------------------------------------------------------------------------------
+====================================================================================================
+            ARITHMETIC FUNCTIONS
+====================================================================================================
+--------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------------------------------
 FUNCTION:           add()
 DESCRIPTION:        Addition function
 RETURNS:            N/A
@@ -326,3 +368,10 @@ void divide()
     system("pause");
     cout << endl;
 }
+
+
+/*--------------------------------------------------------------------------------------------------
+====================================================================================================
+            POWER & ROOT FUNCTIONS
+====================================================================================================
+--------------------------------------------------------------------------------------------------*/
