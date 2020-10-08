@@ -16,20 +16,37 @@ Michael Ring        2020-09-23      1.1 - Added function prototypes for -, *, /,
 Michael Ring        2020-09-23      1.2 - Renamed functions and modified them for the operation.
 Michael Ring        2020-09-24      1.3 - Created prMenu to navigate to power/root functions. 
 Michael Ring        2020-09-24      1.4 - Added new switch to main function to check prMenu input.
-                                            > Commented out, since there's no functions to go to yet
+Michael Ring        2020-10-05      1.5 - Moved prMenu switch to new function prMain().
+Michael Ring        2020-10-05      1.6 - Tested various methods to quit from prMain, unsuccessful.
+                                            > Moving goodbye to global variable, allowing prMain()
+                                              to set it to 'true' as well
+                                            > Changed prMain to a bool function so it can return
+                                              a value, allowing main to check that value in a 
+                                              separate if statement to assign true to goodbye
+Michael Ring        2020-10-07      1.7 - Added prSquare(), prCube(), and prPower().
+Michael Ring        2020-10-07      1.8 - Found better way to call & return prMain (for quit & menu)  
+                                            > Problem is I can only get quit OR menu working,
+                                              not both at the same time. 
+                                            > Commenting out the if statement in main case e
+                                              gets main menu to work, but quit from pr breaks
+Michael Ring        2020-10-07      2.0 - Added remaining pr functions and call them in the switch
+Michael Ring        2020-10-07      2.1 - Testing methods to allow int/floating point selection
+                                            > It currently asks user to select, and validates input,
+                                              but the data type does not actually change.
 --------------------------------------------------------------------------------------------------*/
 
 // Required preprocessor directives
 #include <iostream>    
 #include <iomanip>
 #include <string>
+#include <cmath>
 
 // Namespace
 using namespace std;
 
 // Function prototypes
-void prMain();
 char mainMenu();
+bool prMain();
 char prMenu();
 void getXandY();      
 
@@ -50,14 +67,14 @@ void prRoot();
 const string PROGRAMMER_NAME = "Michael Ring";
 
 // Global variables
-double x, y, result;
+double x, y, result;     
+
 
 /*--------------------------------------------------------------------------------------------------
 ====================================================================================================
             DRIVER FUNCTIONS
 ====================================================================================================
 --------------------------------------------------------------------------------------------------*/
-
 
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           main()
@@ -72,10 +89,12 @@ int main()
 
     char mainChoice;                // Declares variable for menu selections
 
-    bool goodbye = false;           // Flag allows loop to be closed when switched to true
-    while(!goodbye)                 // Open while loop to allow multiple uses without restarting
+    bool goodbye = false;           // Used to open and close while loop
+    while (!goodbye)                 // Open while loop to allow multiple uses without restarting
     {
         mainChoice = mainMenu();    // Calls function mainMenu to get user's selection
+        bool prQuit;
+
         switch (mainChoice)
         {
             case 'a':
@@ -91,60 +110,71 @@ int main()
                 divide();
                 break;
             case 'e':
-                prMenu();
+                prQuit = prMain();
+                if (prQuit == true)
+                    goodbye = true;
                 break;
             case 'q':
                 goodbye = true;
                 break;
         }
+
     }                              
 
     //  GOODBYE
     cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
     cout << __DATE__ << " " __TIME__ << endl << endl;
 
-    system("pause");
+    system ("pause");
     return 0;
 }
 
-
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           prMain()
-DESCRIPTION:        Driver function
-RETURNS:            0
+DESCRIPTION:        Driver function for powers & roots, similar to main()
+RETURNS:            prQuit
 NOTES:              
 --------------------------------------------------------------------------------------------------*/
-void prMain()
+
+bool prMain()
 {
+    bool exit = false;
     char prChoice;
 
-    bool goodbye = false;           // Flag allows loop to be closed when switched to true   
-    while(!goodbye)                 
+    while (!exit)                 
     {
         prChoice = prMenu();    
         switch (prChoice)
         {
             case 'a':
-                add();              
+                prSquare();
                 break;
-            case 'b':       
-                subtract();
+            case 'b':
+                prCube();    
                 break;
             case 'c':
-                multiply();
+                prPower();
                 break;
             case 'd':
-                divide();
+                prSqrt();
                 break;
             case 'e':
-                prMenu();
+                prCbrt();
                 break;
+            case 'f':
+                prRoot();
+                break;
+            case 'm':
+                exit = true;
             case 'q':
-                goodbye = true;
+                return true;
                 break;
         }
     }
+
+    return false;
 }
+
 
 /*--------------------------------------------------------------------------------------------------
 ====================================================================================================
@@ -180,13 +210,14 @@ char mainMenu()
     cout << "          Enter your Choice [a-e, q]:          " << endl;
     cout << "-----------------------------------------------" << endl;
     cout << endl;
-    cin >> mainChoice;
-    cout << endl;
-
     
+
     //  INPUT DECISION LOGIC
 
-    mainChoice = tolower(mainChoice);       // Converts uppercase char input to corresponding lowercase char
+    cin >> mainChoice;
+    cout << endl;
+    mainChoice = tolower(mainChoice);       
+    // Converts uppercase char input to corresponding lowercase char
 
     if (mainChoice >= 'a' && mainChoice <= 'e')
         cout << "You entered: '" << mainChoice << "', that is correct input." << endl;
@@ -201,7 +232,6 @@ char mainMenu()
 
     return mainChoice;
 }
-
 
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           prMenu()
@@ -233,18 +263,17 @@ char prMenu()
     cout << "        Enter your Choice [a-f, m, q]:         " << endl;
     cout << "-----------------------------------------------" << endl;
     cout << endl;
+    
+
+    //  INPUT DECISION LOGIC
     cin >> prChoice;
     cout << endl;
-
-    
-    //  INPUT DECISION LOGIC
-
     prChoice = tolower(prChoice);   
 
     if (prChoice >= 'a' && prChoice <= 'f')
         cout << "You entered: '" << prChoice << "', that is correct input." << endl << endl;
     else if (prChoice == 'm')
-        mainMenu();
+        cout << "You entered: '" << prChoice << "', that is correct input." << endl << endl;
     else if (prChoice == 'q')
         cout << "You entered: '" << prChoice << "'. Goodbye!" << endl << endl;
     else
@@ -259,8 +288,46 @@ char prMenu()
 
 
 /*--------------------------------------------------------------------------------------------------
+====================================================================================================
+            MATH INPUT FUNCTIONS
+====================================================================================================
+--------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           getX()
+DESCRIPTION:        Gets single user input for math functions
+RETURNS:            N/A
+NOTES:              Inputting characters for x results in an infinite scroll
+--------------------------------------------------------------------------------------------------*/
+void getX()
+{
+    char dataChoice;
+    cout << "Interger or floating-point?" << endl;
+    cout << "Enter your choice [i/f]: ";
+    cin >> dataChoice;
+    dataChoice = tolower(dataChoice);
+
+    switch (dataChoice)
+    {
+        case 'i':
+            cout << "You selected: INTERGER" << endl;
+            x = int(x);
+            result = int(result);
+            break;
+        case 'f':
+            cout << "You selected: FLOATING-POINT" << endl;
+            break;
+        default:
+            cout << "You did not select a valid input. Please re-run the function." << endl;
+    }
+
+    cout << "Please input x: ";
+    cin >> x;       // <!> BUG <!>  Same as getXandY
+}
+
+/*--------------------------------------------------------------------------------------------------
 FUNCTION:           getXandY()
-DESCRIPTION:        Gets user input for math functions
+DESCRIPTION:        Gets two user inputs for math functions
 RETURNS:            N/A
 NOTES:              Inputting characters for x and/or y results in an infinite scroll
 --------------------------------------------------------------------------------------------------*/
@@ -296,8 +363,6 @@ void add()
     cout << "   x + y = " << x << " + " << y << " = " << result << endl;
 
     cout << endl << endl;
-    system("pause");
-    cout << endl;
 }
 
 
@@ -319,8 +384,6 @@ void subtract()
     cout << "   x - y = " << x << " - " << y << " = " << result << endl;
 
     cout << endl << endl;
-    system("pause");
-    cout << endl;
 }
 
 
@@ -342,8 +405,6 @@ void multiply()
     cout << "   x * y = " << x << " * " << y << " = " << result << endl;
 
     cout << endl << endl;
-    system("pause");
-    cout << endl;
 }
 
 
@@ -365,8 +426,6 @@ void divide()
     cout << "   x / y = " << x << " / " << y << " = " << result << endl;
 
     cout << endl << endl;
-    system("pause");
-    cout << endl;
 }
 
 
@@ -375,3 +434,123 @@ void divide()
             POWER & ROOT FUNCTIONS
 ====================================================================================================
 --------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           prSquare()
+DESCRIPTION:        Square function
+RETURNS:            N/A
+NOTES:              
+--------------------------------------------------------------------------------------------------*/
+void prSquare()
+{
+    cout << "This function will square x... " << endl;
+    cout << endl;
+
+    getX();
+    result = pow(x, 2);
+
+    cout << endl;
+    cout << "   x ^ 2 = " << x << " ^ 2 = " << result << endl;
+
+    cout << endl << endl;
+}
+
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           prCube()
+DESCRIPTION:        Cube function
+RETURNS:            N/A
+NOTES:              
+--------------------------------------------------------------------------------------------------*/
+void prCube()
+{
+    cout << "This function will cube x... " << endl;
+    cout << endl;
+
+    getX();
+    result = pow(x, 3);
+
+    cout << endl;
+    cout << "   x ^ 3 = " << x << " ^ 3 = " << result << endl;
+
+    cout << endl << endl;
+}
+
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           prPower()
+DESCRIPTION:        Any power function
+RETURNS:            N/A
+NOTES:              
+--------------------------------------------------------------------------------------------------*/
+void prPower()
+{
+    cout << "This function will raise x to the power of y... " << endl;
+    cout << endl;
+
+    getXandY();
+    result = pow(x, y);
+
+    cout << endl;
+    cout << "   x ^ y = " << x << " ^ " << y << " = " << result << endl;
+
+    cout << endl << endl;
+}
+
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           prSqrt()
+DESCRIPTION:        Square root function
+RETURNS:            N/A
+NOTES:              
+--------------------------------------------------------------------------------------------------*/
+void prSqrt()
+{
+    cout << "This function will take the square root of x... " << endl;
+    cout << endl;
+
+    getX();
+    result = sqrt(x);
+
+    cout << endl;
+    cout << "   x ^ 1/2 = " << x << " ^ 1/2 = " << result << endl;
+
+    cout << endl << endl;
+}
+
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           prCbrt()
+DESCRIPTION:        Cube root function
+RETURNS:            N/A
+NOTES:              
+--------------------------------------------------------------------------------------------------*/
+void prCbrt()
+{
+    cout << "This function will take the cube root of x... " << endl;
+    cout << endl;
+
+    getX();
+    result = cbrt(x);
+
+    cout << endl;
+    cout << "   x ^ 1/3 = " << x << " ^ 1/3 = " << result << endl;
+
+    cout << endl << endl;
+}
+
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           prRoot()
+DESCRIPTION:        Any root function
+RETURNS:            N/A
+NOTES:              
+--------------------------------------------------------------------------------------------------*/
+void prRoot()
+{
+    cout << "This function will take the y'th root of x... " << endl;
+    cout << endl;
+
+    getXandY();
+    result = pow(x, 1/y);
+
+    cout << endl;
+    cout << "   x ^ 1/y = " << x << " ^ 1/" << y << " = " << result << endl;
+
+    cout << endl << endl;
+}
