@@ -33,6 +33,8 @@ Michael Ring        2020-10-07      2.0 - Added remaining pr functions and call 
 Michael Ring        2020-10-07      2.1 - Testing methods to allow int/floating point selection
                                             > It currently asks user to select, and validates input,
                                               but the data type does not actually change.
+Michael Ring        2020-10-10      2.2 - Created dataSelect() with loop to determine i/f selection
+Michael Ring        2020-10-10      2.3 - Fixed menu/quit from prMenu
 --------------------------------------------------------------------------------------------------*/
 
 // Required preprocessor directives
@@ -45,10 +47,14 @@ Michael Ring        2020-10-07      2.1 - Testing methods to allow int/floating 
 using namespace std;
 
 // Function prototypes
-char mainMenu();
 bool prMain();
+
+char mainMenu();
 char prMenu();
+
+void getX();
 void getXandY();      
+bool dataSelect();
 
 void add();
 void subtract();
@@ -139,11 +145,9 @@ NOTES:
 bool prMain()
 {
     bool exit = false;
-    char prChoice;
-
     while (!exit)                 
     {
-        prChoice = prMenu();    
+        char prChoice = prMenu();    
         switch (prChoice)
         {
             case 'a':
@@ -166,6 +170,7 @@ bool prMain()
                 break;
             case 'm':
                 exit = true;
+                break;
             case 'q':
                 return true;
                 break;
@@ -192,9 +197,7 @@ char mainMenu()
 {
     char mainChoice;
 
-
     //  MAIN MENU
-
     cout << "-----------------------------------------------" << endl;
     cout << "                   MAIN MENU                   " << endl;
     cout << "-----------------------------------------------" << endl;
@@ -211,9 +214,7 @@ char mainMenu()
     cout << "-----------------------------------------------" << endl;
     cout << endl;
     
-
     //  INPUT DECISION LOGIC
-
     cin >> mainChoice;
     cout << endl;
     mainChoice = tolower(mainChoice);       
@@ -244,7 +245,6 @@ char prMenu()
     char prChoice;
 
     //  MAIN MENU
-
     cout << endl << endl;   
     cout << "-----------------------------------------------" << endl;
     cout << "               POWERS & ROOTS MENU             " << endl;
@@ -273,7 +273,7 @@ char prMenu()
     if (prChoice >= 'a' && prChoice <= 'f')
         cout << "You entered: '" << prChoice << "', that is correct input." << endl << endl;
     else if (prChoice == 'm')
-        cout << "You entered: '" << prChoice << "', that is correct input." << endl << endl;
+        cout << "You entered: '" << prChoice << "'. Returning to main menu..." << endl << endl;
     else if (prChoice == 'q')
         cout << "You entered: '" << prChoice << "'. Goodbye!" << endl << endl;
     else
@@ -289,7 +289,7 @@ char prMenu()
 
 /*--------------------------------------------------------------------------------------------------
 ====================================================================================================
-            MATH INPUT FUNCTIONS
+            INPUT FUNCTIONS
 ====================================================================================================
 --------------------------------------------------------------------------------------------------*/
 
@@ -301,26 +301,6 @@ NOTES:              Inputting characters for x results in an infinite scroll
 --------------------------------------------------------------------------------------------------*/
 void getX()
 {
-    char dataChoice;
-    cout << "Interger or floating-point?" << endl;
-    cout << "Enter your choice [i/f]: ";
-    cin >> dataChoice;
-    dataChoice = tolower(dataChoice);
-
-    switch (dataChoice)
-    {
-        case 'i':
-            cout << "You selected: INTERGER" << endl;
-            x = int(x);
-            result = int(result);
-            break;
-        case 'f':
-            cout << "You selected: FLOATING-POINT" << endl;
-            break;
-        default:
-            cout << "You did not select a valid input. Please re-run the function." << endl;
-    }
-
     cout << "Please input x: ";
     cin >> x;       // <!> BUG <!>  Same as getXandY
 }
@@ -338,6 +318,42 @@ void getXandY()
     cin >> y;       // Inputting characters rather than numbers results in an infinite scroll
 }
 
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           getXandY()
+DESCRIPTION:        Gets two user inputs for math functions
+RETURNS:            N/A
+NOTES:              Inputting characters for x and/or y results in an infinite scroll
+--------------------------------------------------------------------------------------------------*/
+bool dataSelect()
+{
+    char dataChoice;
+    cout << "Integer or floating-point?" << endl;
+
+    while (true)
+    {
+        cout << "Enter your choice [i/f]: ";
+
+        cin >> dataChoice;
+        cin.sync();
+        dataChoice = tolower(dataChoice);
+    
+        switch (dataChoice)
+        {
+            case 'i':
+                cout << "You selected: INTEGER" << endl << endl;
+                return true;
+                break;
+            case 'f':
+                cout << "You selected: FLOATING POINT" << endl << endl;
+                return false;
+                break;
+            default:
+                cout << "Please try again." << endl;
+                break;
+        }
+    }
+}
+
 
 /*--------------------------------------------------------------------------------------------------
 ====================================================================================================
@@ -353,16 +369,19 @@ NOTES:
 --------------------------------------------------------------------------------------------------*/
 void add()
 {
-    cout << "This function will add x and y... " << endl;
-    cout << endl;
+    cout << "This function will add x and y... " << endl << endl;
 
+    bool convertData = dataSelect();
     getXandY();
+    if (convertData == true)
+        {
+            x = int(x);
+            y = int(y);
+            result = int(result);
+        }
+    
     result = x + y;
-
-    cout << endl;
-    cout << "   x + y = " << x << " + " << y << " = " << result << endl;
-
-    cout << endl << endl;
+    cout << endl << "   x + y = " << x << " + " << y << " = " << result << endl << endl << endl;
 }
 
 
@@ -374,16 +393,19 @@ NOTES:
 --------------------------------------------------------------------------------------------------*/
 void subtract()
 {
-    cout << "This function will subtract x from y... " << endl;
-    cout << endl;
+    cout << "This function will subtract y from x... " << endl << endl;
 
+    bool convertData = dataSelect();
     getXandY();
+    if (convertData == true)
+        {
+            x = int(x);
+            y = int(y);
+            result = int(result);
+        }
+    
     result = x - y;
-
-    cout << endl;
-    cout << "   x - y = " << x << " - " << y << " = " << result << endl;
-
-    cout << endl << endl;
+    cout << endl << "   x - y = " << x << " - " << y << " = " << result << endl << endl << endl;
 }
 
 
@@ -395,16 +417,19 @@ NOTES:
 --------------------------------------------------------------------------------------------------*/
 void multiply()
 {
-    cout << "This function will multiply x and y... " << endl;
-    cout << endl;
+    cout << "This function will multiply x by y... " << endl << endl;
 
+    bool convertData = dataSelect();
     getXandY();
+    if (convertData == true)
+        {
+            x = int(x);
+            y = int(y);
+            result = int(result);
+        }
+    
     result = x * y;
-
-    cout << endl;
-    cout << "   x * y = " << x << " * " << y << " = " << result << endl;
-
-    cout << endl << endl;
+    cout << endl << "   x * y = " << x << " * " << y << " = " << result << endl << endl << endl;
 }
 
 
@@ -416,16 +441,28 @@ NOTES:
 --------------------------------------------------------------------------------------------------*/
 void divide()
 {
-    cout << "This function will divide x by y... " << endl;
-    cout << endl;
+    cout << "This function will add x and y... " << endl << endl;
 
+    bool convertData = dataSelect();
     getXandY();
-    result = x / y;
+    if (convertData == true)
+        {
+            x = int(x);
+            y = int(y);
+            result = int(result);
+        }
 
-    cout << endl;
-    cout << "   x / y = " << x << " / " << y << " = " << result << endl;
+    if (y == 0)
+        {
+            cout << "ERROR: Cannot divide by zero. Please try again." << endl;
+        }
+    else 
+        {
+            result = x + y;
+            cout << endl << "   x + y = " << x << " + " << y << " = " << result << endl << endl << endl;
+        }
 
-    cout << endl << endl;
+
 }
 
 
