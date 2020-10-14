@@ -35,6 +35,10 @@ Michael Ring        2020-10-07      2.1 - Testing methods to allow int/floating 
                                               but the data type does not actually change.
 Michael Ring        2020-10-10      2.2 - Created dataSelect() with loop to determine i/f selection
 Michael Ring        2020-10-10      2.3 - Fixed menu/quit from prMenu
+Michael Ring        2020-10-10      2.4 - Added cin.sync() to bulletproof i/f selection
+                                            > Solution found in the forum post cited below:
+                                            > http://www.cplusplus.com/forum/beginner/50795/
+Michael Ring        2020-10-10      2.5 - 
 --------------------------------------------------------------------------------------------------*/
 
 // Required preprocessor directives
@@ -141,7 +145,6 @@ DESCRIPTION:        Driver function for powers & roots, similar to main()
 RETURNS:            prQuit
 NOTES:              
 --------------------------------------------------------------------------------------------------*/
-
 bool prMain()
 {
     bool exit = false;
@@ -223,7 +226,7 @@ char mainMenu()
     if (mainChoice >= 'a' && mainChoice <= 'e')
         cout << "You entered: '" << mainChoice << "', that is correct input." << endl;
     else if (mainChoice == 'q')
-        cout << "You entered: '" << mainChoice << "'. Goodbye!" << endl << endl;
+        cout << "You entered: '" << mainChoice << "'. Goodbye!" << endl;
     else
     {
         cout << "You did not enter a valid option." << endl;
@@ -245,7 +248,6 @@ char prMenu()
     char prChoice;
 
     //  MAIN MENU
-    cout << endl << endl;   
     cout << "-----------------------------------------------" << endl;
     cout << "               POWERS & ROOTS MENU             " << endl;
     cout << "-----------------------------------------------" << endl;
@@ -271,11 +273,11 @@ char prMenu()
     prChoice = tolower(prChoice);   
 
     if (prChoice >= 'a' && prChoice <= 'f')
-        cout << "You entered: '" << prChoice << "', that is correct input." << endl << endl;
+        cout << "You entered: '" << prChoice << "', that is correct input." << endl;
     else if (prChoice == 'm')
-        cout << "You entered: '" << prChoice << "'. Returning to main menu..." << endl << endl;
+        cout << "You entered: '" << prChoice << "'. Returning to main menu..." << endl;
     else if (prChoice == 'q')
-        cout << "You entered: '" << prChoice << "'. Goodbye!" << endl << endl;
+        cout << "You entered: '" << prChoice << "'. Goodbye!" << endl;
     else
     {
         cout << "You did not enter a valid option." << endl;
@@ -303,6 +305,7 @@ void getX()
 {
     cout << "Please input x: ";
     cin >> x;       // <!> BUG <!>  Same as getXandY
+    cin.clear();
 }
 
 /*--------------------------------------------------------------------------------------------------
@@ -316,6 +319,7 @@ void getXandY()
     cout << "Please input x and y: ";
     cin >> x;       // <!> BUG <!>
     cin >> y;       // Inputting characters rather than numbers results in an infinite scroll
+    cin.clear();
 }
 
 /*--------------------------------------------------------------------------------------------------
@@ -373,6 +377,7 @@ void add()
 
     bool convertData = dataSelect();
     getXandY();
+    cin.clear();
     if (convertData == true)
         {
             x = int(x);
@@ -382,8 +387,8 @@ void add()
     
     result = x + y;
     cout << endl << "   x + y = " << x << " + " << y << " = " << result << endl << endl << endl;
+    cin.clear();
 }
-
 
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           subtract()
@@ -408,7 +413,6 @@ void subtract()
     cout << endl << "   x - y = " << x << " - " << y << " = " << result << endl << endl << endl;
 }
 
-
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           multiply()
 DESCRIPTION:        Multiplication function
@@ -432,7 +436,6 @@ void multiply()
     cout << endl << "   x * y = " << x << " * " << y << " = " << result << endl << endl << endl;
 }
 
-
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           divide()
 DESCRIPTION:        Division function
@@ -454,15 +457,14 @@ void divide()
 
     if (y == 0)
         {
-            cout << "ERROR: Cannot divide by zero. Please try again." << endl;
+            cout << "ERROR: Can't divide by zero." << endl;
+            cout << "Please try again." << endl << endl << endl;
         }
     else 
         {
             result = x + y;
             cout << endl << "   x + y = " << x << " + " << y << " = " << result << endl << endl << endl;
         }
-
-
 }
 
 
@@ -480,14 +482,12 @@ NOTES:
 --------------------------------------------------------------------------------------------------*/
 void prSquare()
 {
-    cout << "This function will square x... " << endl;
-    cout << endl;
+    cout << "This function will square x... " << endl << endl;
 
     getX();
     result = pow(x, 2);
 
-    cout << endl;
-    cout << "   x ^ 2 = " << x << " ^ 2 = " << result << endl;
+    cout << endl << "   x ^ 2 = " << x << " ^ 2 = " << result << endl;
 
     cout << endl << endl;
 }
@@ -544,12 +544,16 @@ void prSqrt()
     cout << endl;
 
     getX();
-    result = sqrt(x);
-
-    cout << endl;
-    cout << "   x ^ 1/2 = " << x << " ^ 1/2 = " << result << endl;
-
-    cout << endl << endl;
+    if (x <= 0)
+        {
+            cout << "ERROR: Can't square root negatives." << endl;
+            cout << "Please try again." << endl << endl << endl;
+        }
+    else 
+        {
+            result = sqrt(x);
+            cout << endl << "   x ^ 1/2 = " << x << " ^ 1/2 = " << result << endl << endl << endl;
+        }
 }
 
 /*--------------------------------------------------------------------------------------------------
