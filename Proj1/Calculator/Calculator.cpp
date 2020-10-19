@@ -38,7 +38,15 @@ Michael Ring        2020-10-10      2.3 - Fixed menu/quit from prMenu
 Michael Ring        2020-10-10      2.4 - Added cin.sync() to bulletproof i/f selection
                                             > Solution found in the forum post cited below:
                                             > http://www.cplusplus.com/forum/beginner/50795/
-Michael Ring        2020-10-10      2.5 - 
+Michael Ring        2020-10-15      2.5 - Calling cin as while condition for input validation
+                                            > Got the idea from this stackoverflow thread:
+                                            > https://stackoverflow.com/questions/19483126/
+Michael Ring        2020-10-15      2.6 - Ditched the previous two solutions in favor of 
+                                          cin.clear(), cin.ignore(), and cin.good().
+Michael Ring        2020-10-15      2.7 - Dialed in input validation for input functions
+Michael Ring        2020.10-15      2.8 - Added additional cin.ignore()'s to prevent multi-input
+                                            > e.g. inputting "a i 5 3 a" from main menu
+                                            > inputting "x y" in same line is still acceptable 
 --------------------------------------------------------------------------------------------------*/
 
 // Required preprocessor directives
@@ -97,21 +105,19 @@ int main()
 {
     system("cls");                  // Clears the screen (nothing to clear unless opened from cmd)
 
-    char mainChoice;                // Declares variable for menu selections
-
-    bool goodbye = false;           // Used to open and close while loop
-    while (!goodbye)                 // Open while loop to allow multiple uses without restarting
+    bool goodbye = false;           // Flag used to open and close while loop
+    while (!goodbye)                // while loop allows multiple uses without restarting
     {
-        mainChoice = mainMenu();    // Calls function mainMenu to get user's selection
-        bool prQuit;
+        char mainChoice = mainMenu();//Calls function mainMenu to get user's selection
+        bool prQuit;                // Flag to allow closing of loop from powers & roots menu
 
-        switch (mainChoice)
+        switch (mainChoice)         // Tests user selection to direct them to the right function
         {
             case 'a':
-                add();              // If mainChoice == a, call add function
+                add();              // If mainChoice == 'a', call add function
                 break;
             case 'b':       
-                subtract();
+                subtract();         // etc.
                 break;
             case 'c':
                 multiply();
@@ -120,15 +126,14 @@ int main()
                 divide();
                 break;
             case 'e':
-                prQuit = prMain();
+                prQuit = prMain();  // Calls pr driver and checks for quit command
                 if (prQuit == true)
-                    goodbye = true;
+                    goodbye = true; // Closes while loop, quitting program
                 break;
             case 'q':
-                goodbye = true;
+                goodbye = true;     // Closes while loop, quitting program
                 break;
         }
-
     }                              
 
     //  GOODBYE
@@ -147,17 +152,17 @@ NOTES:
 --------------------------------------------------------------------------------------------------*/
 bool prMain()
 {
-    bool exit = false;
+    bool exit = false;              // Flag used to open and close while loop
     while (!exit)                 
     {
-        char prChoice = prMenu();    
-        switch (prChoice)
+        char prChoice = prMenu();   // Calls function prMenu to get user's selection
+        switch (prChoice)           // Tests user selection to direct them to the right function
         {
             case 'a':
-                prSquare();
+                prSquare();         // If prChoice == 'a', call square function
                 break;
             case 'b':
-                prCube();    
+                prCube();           // etc.
                 break;
             case 'c':
                 prPower();
@@ -172,15 +177,15 @@ bool prMain()
                 prRoot();
                 break;
             case 'm':
-                exit = true;
+                exit = true;        // Closes while loop
                 break;
             case 'q':
-                return true;
+                return true;        // Closes function, quitting program
                 break;
         }
     }
 
-    return false;
+    return false;                   // Closes function, returning to main menu
 }
 
 
@@ -200,7 +205,7 @@ char mainMenu()
 {
     char mainChoice;
 
-    //  MAIN MENU
+    //  MAIN MENU DISPLAY
     cout << "-----------------------------------------------" << endl;
     cout << "                   MAIN MENU                   " << endl;
     cout << "-----------------------------------------------" << endl;
@@ -218,20 +223,53 @@ char mainMenu()
     cout << endl;
     
     //  INPUT DECISION LOGIC
-    cin >> mainChoice;
-    cout << endl;
-    mainChoice = tolower(mainChoice);       
-    // Converts uppercase char input to corresponding lowercase char
+    cin.clear();             
+    // Clears input buffer from previous math operations
 
-    if (mainChoice >= 'a' && mainChoice <= 'e')
-        cout << "You entered: '" << mainChoice << "', that is correct input." << endl;
-    else if (mainChoice == 'q')
-        cout << "You entered: '" << mainChoice << "'. Goodbye!" << endl;
-    else
+    bool menuValid = false;         // Flag used to open and close while loop
+    while (!menuValid)
     {
-        cout << "You did not enter a valid option." << endl;
-        cout << "Please try again." << endl;
+        cin >> mainChoice;           
+        cout << endl;
+        mainChoice = tolower(mainChoice);   
+        // Converts uppercase char input to corresponding lowercase
+
+        if (cin.good())
+        // Checks whether input matches data type
+        {
+            if (mainChoice >= 'a' && mainChoice <= 'e')
+            {
+                cout << "You entered: '" << mainChoice << "', that is correct input." << endl;
+                menuValid = true;
+                // Closes while loop
+            }
+            else if (mainChoice == 'q')
+            {
+                cout << "You entered: '" << mainChoice << "'. Goodbye!" << endl;
+                menuValid = true;
+                // Closes while loop
+            }
+            else
+            // Catches invalid character input, e.g. x or j
+            {
+                cout << "ERROR: You did not enter a valid option." << endl;
+                cout << "Please try again: ";
+                cin.clear();
+                cin.ignore(100, '\n');
+            }
+        }
+        else
+        // Catches non-character input, e.g. numbers
+        {
+            cout << "ERROR: You did not enter a valid option." << endl << endl;
+            cout << "Please try again: ";
+            cin.clear();            // Fixes error scroll
+            cin.ignore(100, '\n');  // Ignores next 100 characters in input buffer
+        }
     }
+    cin.ignore(100, '\n');
+    // Clears input buffer so extra input isn't applied to following cin statements
+    
     cout << endl << endl;
 
     return mainChoice;
@@ -247,7 +285,7 @@ char prMenu()
 {
     char prChoice;
 
-    //  MAIN MENU
+    //  POWERS & ROOTS MENU DISPLAY
     cout << "-----------------------------------------------" << endl;
     cout << "               POWERS & ROOTS MENU             " << endl;
     cout << "-----------------------------------------------" << endl;
@@ -268,21 +306,56 @@ char prMenu()
     
 
     //  INPUT DECISION LOGIC
-    cin >> prChoice;
-    cout << endl;
-    prChoice = tolower(prChoice);   
+    cin.clear();
+    // Clears input buffer from previous math operations
 
-    if (prChoice >= 'a' && prChoice <= 'f')
-        cout << "You entered: '" << prChoice << "', that is correct input." << endl;
-    else if (prChoice == 'm')
-        cout << "You entered: '" << prChoice << "'. Returning to main menu..." << endl;
-    else if (prChoice == 'q')
-        cout << "You entered: '" << prChoice << "'. Goodbye!" << endl;
-    else
+    bool menuValid = false;         // Flag to open and close while loop
+    while (!menuValid)
     {
-        cout << "You did not enter a valid option." << endl;
-        cout << "Please try again." << endl;
+        cin >> prChoice;
+        prChoice = tolower(prChoice);   
+        // Converts uppercase char input to corresponding lowercase
+
+        if (cin.good())
+        // Checks whether input matches data type
+        {
+            if (prChoice >= 'a' && prChoice <= 'f')
+            {
+                cout << "You entered: '" << prChoice << "', that is correct input." << endl;
+                menuValid = true;
+                // Closes while loop
+            }
+            else if (prChoice == 'm')
+            {
+                cout << "You entered: '" << prChoice << "'. Returning to main menu..." << endl;
+                menuValid = true;
+                // Closes while loop
+            }
+            else if (prChoice == 'q')
+            {
+                cout << "You entered: '" << prChoice << "'. Goodbye!" << endl;
+                menuValid = true;
+                // Closes while loop
+            }
+            else
+            {
+            cout << "ERROR: You did not enter a valid option." << endl << endl;
+            cout << "Please try again." << endl;
+            cin.clear();
+            cin.ignore(100, '\n');
+            }
+        } 
+        else
+        {
+            cout << "ERROR: You did not enter a valid option." << endl << endl;
+            cout << "Please try again:";
+            cin.clear();            // Fixes error scroll
+            cin.ignore(100, '\n');  // Ignores next 100 characters in input buffer
+        }      
     }
+    cin.ignore(100, '\n');
+    // Clears input buffer so extra input isn't applied to following cin statements
+
     cout << endl << endl;
 
     return prChoice;
@@ -299,60 +372,122 @@ char prMenu()
 FUNCTION:           getX()
 DESCRIPTION:        Gets single user input for math functions
 RETURNS:            N/A
-NOTES:              Inputting characters for x results in an infinite scroll
+NOTES:              
 --------------------------------------------------------------------------------------------------*/
 void getX()
 {
     cout << "Please input x: ";
-    cin >> x;       // <!> BUG <!>  Same as getXandY
-    cin.clear();
+
+    bool xValid = false;            // Flag to open and close while loop
+    while (!xValid)
+    {
+        cin >> x;
+
+        if (cin.good())
+        // Checks whether input matches data type
+        {
+            xValid = true;          // Closes while loop
+        }
+        else
+        {
+            cout << "ERROR: Input numbers only." << endl << endl;
+            cout << "Please try again: ";
+            cin.clear();
+            cin.ignore(100, '\n');           
+        }
+    }
+
+    cin.ignore(100, '\n');
+    // Clears input buffer so extra input isn't applied to following cin statements
 }
 
 /*--------------------------------------------------------------------------------------------------
 FUNCTION:           getXandY()
 DESCRIPTION:        Gets two user inputs for math functions
 RETURNS:            N/A
-NOTES:              Inputting characters for x and/or y results in an infinite scroll
+NOTES:              
 --------------------------------------------------------------------------------------------------*/
 void getXandY()
 {
     cout << "Please input x and y: ";
-    cin >> x;       // <!> BUG <!>
-    cin >> y;       // Inputting characters rather than numbers results in an infinite scroll
-    cin.clear();
+
+    bool xValid = false;            // Flag to open and close while loop
+    while (!xValid)
+    {
+        cin >> x;
+
+        if (cin.good())
+        // Checks whether input matches data type
+        {
+            xValid = true;
+        }
+        else
+        {
+            cout << "ERROR: Input numbers only." << endl << endl;
+            cout << "Please try again: ";
+            cin.clear();            // Fixes error scroll
+            cin.ignore(100, '\n');  // Ignores next 100 characters in input buffer            
+        }
+    }
+
+    bool yValid = false;            // Flag to open and close while loop
+    while (!yValid)
+    {
+        cin >> y;
+
+        if (cin.good())
+        // Checks whether input matches data type
+        {
+            yValid = true;          // Closes while loop
+        }
+        else
+        {
+            cout << "ERROR: Input numbers only." << endl << endl;
+            cout << "Please try again: ";
+            cin.clear();            // Fixes error scroll
+            cin.ignore(100, '\n');  // Ignores next 100 characters in input buffer             
+        }  
+    }
+
+    cin.ignore(100, '\n');
+    // Clears input buffer so extra input isn't applied to following cin statements
 }
 
 /*--------------------------------------------------------------------------------------------------
-FUNCTION:           getXandY()
-DESCRIPTION:        Gets two user inputs for math functions
+FUNCTION:           dataSelect()
+DESCRIPTION:        Allows user to select int or float
 RETURNS:            N/A
-NOTES:              Inputting characters for x and/or y results in an infinite scroll
+NOTES:              
 --------------------------------------------------------------------------------------------------*/
 bool dataSelect()
 {
     char dataChoice;
     cout << "Integer or floating-point?" << endl;
 
-    while (true)
+    while (1) // Loop until return value is found
     {
         cout << "Enter your choice [i/f]: ";
 
         cin >> dataChoice;
-        cin.sync();
         dataChoice = tolower(dataChoice);
-    
+        // Converts uppercase char input to corresponding lowercase
+
         switch (dataChoice)
         {
             case 'i':
                 cout << "You selected: INTEGER" << endl << endl;
+                cin.ignore(100, '\n');
                 return true;
                 break;
             case 'f':
                 cout << "You selected: FLOATING POINT" << endl << endl;
+                cin.ignore(100, '\n');
                 return false;
                 break;
             default:
-                cout << "Please try again." << endl;
+                cout << "ERROR: Input I or F." << endl << endl;
+                cin.clear();
+                cin.ignore(100, '\n');
                 break;
         }
     }
@@ -377,7 +512,6 @@ void add()
 
     bool convertData = dataSelect();
     getXandY();
-    cin.clear();
     if (convertData == true)
         {
             x = int(x);
@@ -387,7 +521,6 @@ void add()
     
     result = x + y;
     cout << endl << "   x + y = " << x << " + " << y << " = " << result << endl << endl << endl;
-    cin.clear();
 }
 
 /*--------------------------------------------------------------------------------------------------
@@ -457,7 +590,7 @@ void divide()
 
     if (y == 0)
         {
-            cout << "ERROR: Can't divide by zero." << endl;
+            cout << "ERROR: Can't divide by zero." << endl << endl;
             cout << "Please try again." << endl << endl << endl;
         }
     else 
@@ -546,7 +679,7 @@ void prSqrt()
     getX();
     if (x <= 0)
         {
-            cout << "ERROR: Can't square root negatives." << endl;
+            cout << "ERROR: Can't square root negatives." << endl << endl;
             cout << "Please try again." << endl << endl << endl;
         }
     else 
