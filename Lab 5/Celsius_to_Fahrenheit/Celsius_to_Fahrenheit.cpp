@@ -5,9 +5,13 @@ COMPILER:           MinGW C++ compiler
 NOTES:
 
 MODIFICATION HISTORY:
-Author              Date           Version
----------------     ----------     ---------------
-Michael Ring        2020-10-14     0.1 - 
+Author              Date            Version
+---------------     ----------      ---------------
+Michael Ring        2020-10-14      0.1 - Copied template, added preprocessor directives + namespace
+Michael Ring        2020-10-19      0.2 - Defined variables (goodbye, scale, fahrenheit, celsius)
+Michael Ring        2020-10-19      0.3 - Added logic for C-to-F conversion   
+Michael Ring        2020-10-19      0.4 - Added logic for F-to-C conversion
+Michael Ring        2020-10-19      0.5 - Added cin.sync logic for input validation for C/F
 --------------------------------------------------------------------------------------------------*/
 
 #include <iostream>
@@ -32,10 +36,10 @@ int main()
     float fahrenheit;
     float celsius;
 
-   
+
     while (!goodbye)
     {
-        cout << "Fahrenheit or Celsius [F/C]: ";
+        cout << endl << "Fahrenheit or Celsius [F/C]:   ";
         cin >> scale;
         scale = tolower(scale);
         cin.sync();
@@ -43,28 +47,44 @@ int main()
         switch (scale)
         {
             case 'f':
-                cout << "Enter the temperature in Fahrenheit: ";
+                cout << endl << "Enter the temperature in Fahrenheit:   ";
                 cin >> fahrenheit;
-                cin.clear();
+                if (cin.good())
+                {
+                    celsius = ((fahrenheit - 32) * 5) / 9;
+                    cout << endl << fahrenheit << " F is:   " << celsius << " C." << endl << endl;
+                }
+                else
+                {   // Validates temperature input
+                    cout << "ERROR: Input numbers only." << endl;
+                    cout << "Please rerun the program." << endl;            
+                }
                 goodbye = true;
                 break;
             case 'c':
                 cout << "Enter the temperature in Celsius: ";
                 cin >> celsius;
-                cin.clear();
-                fahrenheit = (9/5) * celsius + 32;
-                cout << celsius << " C is:   " << fahrenheit << " F." << endl;
+                if (cin.good())
+                {
+                    fahrenheit = ((celsius * 9) / 5) + 32;
+                    cout << endl << celsius << " C is:   " << fahrenheit << " F." << endl << endl;
+                }
+                else
+                {   // Validates temperature input
+                    cout << "ERROR: Input numbers only." << endl;
+                    cout << "Please rerun the program." << endl;            
+                }
                 goodbye = true;
                 break;
-            default:
-                cout << "You did not enter a valid option. Please try again." << endl;
+            default:    
+                // Validates C/F choice
+                cout << "You did not enter a valid option. Please try again.";
                 break;
         }
     }
     
     cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
     cout << __DATE__ << " " __TIME__ << endl;
-    cout << endl;
 
     system ("pause");
     return 0;
