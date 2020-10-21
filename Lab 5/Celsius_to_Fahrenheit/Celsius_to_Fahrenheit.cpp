@@ -13,7 +13,8 @@ Michael Ring        2020-10-19      0.3 - Created loop, added logic for C-to-F s
 Michael Ring        2020-10-19      0.4 - Added logic for conversion
 Michael Ring        2020-10-19      0.5 - Added cin.sync to F/C input so entering a string doesn't 
                                           throw an error for every character
-Michael Ring        2020-10-21      1.0 - Added input validation for temperature input.
+Michael Ring        2020-10-21      1.0 - Added input validation for temperature
+Michael Ring        2020-10-21      1.1 - Added degree symbol, fixed line spacing
 --------------------------------------------------------------------------------------------------*/
 
 #include <iostream>
@@ -53,9 +54,10 @@ int main()
                 cin >> fahrenheit;
                 cout << endl;
                 if (cin.good())
-                {
+                {   // Calculates and prints result
                     celsius = ((fahrenheit - 32) * 5) / 9;
-                    cout << fahrenheit << " F is:   " << celsius << " C." << endl << endl;
+                    cout << fahrenheit << " F" << "\370" << "is:   ";
+                    cout << celsius << " C" << "\370" << "." << endl << endl;
                 }
                 else
                 {   // Validates temperature input
@@ -65,17 +67,18 @@ int main()
                 goodbye = true;
                 break;
             case 'c':
-                cout << "Enter the temperature in Celsius: ";
+                cout << endl << "Enter the temperature in Celsius: ";
                 cin >> celsius;
                 cout << endl;
                 if (cin.good())
-                {
+                {   // Calculates and prints result
                     fahrenheit = ((celsius * 9) / 5) + 32;
-                    cout << celsius << " C is:   " << fahrenheit << " F." << endl << endl;
+                    cout << celsius << " C" << "\370" << "is:   ";
+                    cout << fahrenheit << " F" << "\370" << "." << endl << endl;
                 }
                 else
                 {   // Validates temperature input
-                    cout << endl << "ERROR: Input numbers only." << endl;
+                    cout << "ERROR: Input numbers only." << endl;
                     cout << "Please rerun the program." << endl << endl;            
                 }
                 goodbye = true;
