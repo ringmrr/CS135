@@ -4,7 +4,7 @@ using namespace std;
 int main()
 {
   int input_var = 0;
-  // Enter the do while loop and stay there until either
+  // Enter the do while loop anrd stay there until either
   // a non-numeric is entered, or -1 is entered.  Note that
   // cin will accept any integer, 4, 40, 400, etc.
   do {
