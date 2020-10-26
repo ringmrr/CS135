@@ -13,6 +13,7 @@ Michael Ring        2020-10-21      1.2 - Added global constants
 Michael Ring        2020-10-21      1.3 - Replaced conversion logic and output
 Michael Ring        2020-10-21      1.4 - Using setprecision and fixed manipulators
 Michael Ring        2020-10-21      1.5 - Added trig functions
+Michael Ring        2020-10-22      1.6 - Added bool valid to not repeat trig output twice in code
 --------------------------------------------------------------------------------------------------*/
 
 //PREPROCESSOR DIRECTIVES
@@ -39,10 +40,10 @@ NOTES:
 int main()
 {
     bool goodbye = false;
+    bool valid = false;
     char scale;
     float deg;
     float rad;
-
 
     while (!goodbye)
     {
@@ -57,37 +58,51 @@ int main()
                 cout << endl << "Enter an angle in degrees:   ";
                 cin >> deg;
                 cout << endl;
+
                 if (cin.good())
-                {   // Calculates and prints result
+                {   
+                    // Calculates and prints result
                     rad = deg * RAD_PER_DEG;
                     cout << "   " << deg << "\370  =  ";
                     cout << setprecision(4) << fixed << rad << " radians." << endl << endl;
+
+                    // Flags trig function output
+                    valid = true;
                 }
                 else
-                {   // Validates angle input
+                {   
+                    // Validates angle input
                     cout << "ERROR: Input numbers only." << endl;
                     cout << "Please rerun the program." << endl << endl;            
                 }
 
                 goodbye = true;
                 break;
+
             case 'r':
                 cout << endl << "Enter an angle in degrees:   ";
                 cin >> rad;
                 cout << endl;
+    
                 if (cin.good())
-                {   // Calculates and prints result
+                {   
+                    // Calculates and prints result
                     deg = rad * DEG_PER_RAD;
                     cout << "   " << deg << "\370  =  ";
                     cout << setprecision(4) << fixed << rad << " radians" << endl << endl;
+
+                    // Flags trig function output
+                    valid = true;
                 }
                 else
-                {   // Validates angle input
+                {   
+                    // Validates angle input
                     cout << "ERROR: Input numbers only." << endl;
                     cout << "Please rerun the program." << endl << endl;            
                 }
                 goodbye = true;
                 break;
+                
             default:    
                 // Validates d/r choice
                 cout << "You did not enter a valid option. Please try again.";
@@ -95,10 +110,13 @@ int main()
         }
     }
     
-    cout << "Sine:      " << setprecision(4) << fixed << sin(rad) << endl;
-    cout << "Cosine:    " << setprecision(4) << fixed << cos(rad) << endl;
-    cout << "Tangent:   " << setprecision(4) << fixed << tan(rad) << endl;
-    cout << endl;
+    if (valid)
+    {
+        cout << "Sine:      " << setprecision(4) << fixed << sin(rad) << endl;
+        cout << "Cosine:    " << setprecision(4) << fixed << cos(rad) << endl;
+        cout << "Tangent:   " << setprecision(4) << fixed << tan(rad) << endl;
+        cout << endl;
+    }
 
     cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
     cout << __DATE__ << " " __TIME__ << endl;
