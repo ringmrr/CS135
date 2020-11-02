@@ -7,13 +7,13 @@ NOTES:
 MODIFICATION HISTORY:
 Author              Date            Version
 ---------------     ----------      ---------------
-Michael Ring        2020-10-26      0.1 - Declared variables and formatted output
-Michael Ring        2020-10-26      0.2 - Assign rand() to x and y
+Michael Ring        2020-10-26      1.1 - Declared variables and formatted output
+Michael Ring        2020-10-26      1.2 - Assign rand() to x and y
                                             > Assigns same values each time the program is run.
-Michael Ring        2020-10-27      0.3 - Added if statement to set constraints for x and y
-Michael Ring        2020-10-27      0.4 - Added srand and way to generate seed
-                                            > Solution found in Starting out with C++ p.129
-Michael Ring        2020-10-27      1.0 - Pauses and prints result
+Michael Ring        2020-10-27      1.3 - Added if statement to set constraints for x and y
+Michael Ring        2020-10-27      1.4 - Added srand and way to generate seed
+                                            > SOLUTION FOUND IN: Starting out with C++ - p.129
+Michael Ring        2020-10-27      1.5 - Pauses and prints result
 --------------------------------------------------------------------------------------------------*/
 
 // PREPROCESSOR DIRECTIVES
@@ -37,6 +37,7 @@ NOTES:              Optional notes on this function
 --------------------------------------------------------------------------------------------------*/
 int main()
 {
+    // Variable declarations
     int x, y, result;
 
     // Gets the system time to seed RNG
@@ -56,6 +57,7 @@ int main()
             valid = true;
     }
 
+    // Calculates the result, stores it as variable
     result = x + y;
 
     // Print calculation without result
@@ -74,7 +76,8 @@ int main()
     cout << setw(5) << right << result << endl << endl;
 
     // Goodbye!
-    cout << "Programmed by: " << PROGRAMMER_NAME << " -- " << __DATE__ << " " __TIME__ << endl;
+    cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
+    cout << __DATE__ << " " __TIME__ << endl;
     system("pause");
     return 0;
 }

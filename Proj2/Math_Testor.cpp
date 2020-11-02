@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------------------------------
-FILENAME:           Math_Tutor3.cpp
+FILENAME:           Math_Testor.cpp
 DESCRIPTION:        Subproject of Lab 6
 COMPILER:           MinGW C++ compiler
 NOTES:             
@@ -7,15 +7,8 @@ NOTES:
 MODIFICATION HISTORY:
 Author              Date            Version
 ---------------     ----------      ---------------
-Michael Ring        2020-10-28      2.2 - Copied from Math_Tutor2.cpp
-Michael Ring        2020-10-28      3.0 - Moved contents of main to void add() temporarily
-Michael Ring        2020-10-28      3.1 - Created while loop and case in main() for function calls
-Michael Ring        2020-10-28      3.2 - Added prototypes for new functions
-Michael Ring        2020-10-29      3.3 - Separated into more functions for modularity
-                                            > menu(), getAnswer(), checkAnswer(), rng(), add()
-Michael Ring        2020-10-29      3.4 - Added more documentation
-Michael Ring        2020-10-29      3.5 - Copied add() to subtract(), multiply(), and divide()
-Michael Ring        2020-10-29      3.6 - Modified divide() to work appropriately
+Michael Ring        2020-10-28      2.2 - Copied from Math_Tutor3.cpp
+
 --------------------------------------------------------------------------------------------------*/
 
 // PREPROCESSOR DIRECTIVES
@@ -52,6 +45,11 @@ NOTES:              Function redirection and quitting
 --------------------------------------------------------------------------------------------------*/
 int main()
 {
+    cout << "          ARITHMETIC PRACTICE PROGRAM"                 << endl << endl;
+    cout << "Welcome to the Math Skills Practice Program."          << endl << endl;
+    cout << "This program allows you to practice your math skills." << endl << endl;
+    cout << "Choose what to practice in the menu shown below."      << endl << endl << endl;
+
     bool goodbye = false;
     while (!goodbye)
     {
@@ -90,15 +88,15 @@ NOTES:
 --------------------------------------------------------------------------------------------------*/
 int menu()
 {
-    cout << "        Math Tutor Menu"         << endl;
-    cout << "-------------------------------" << endl;
-    cout << "1. Addition problem"             << endl;
-    cout << "2. Subtraction problem"          << endl;
-    cout << "3. Multiplication problem"       << endl;
-    cout << "4. Division problem"              << endl;
-    cout << "5. Quit this program"            << endl;
-    cout << "-------------------------------" << endl;
-    cout << "Enter your choice (1-5): ";
+    cout << "-----------------------------------------------------" << endl;
+    cout << "              ARITHMETIC PRACTICE PROGRAM"             << endl;
+    cout << "                      MAIN MENU"                       << endl;  
+    cout << "-----------------------------------------------------" << endl;
+    cout << "a. Addition" << endl;
+    cout << "b. Subtraction" << endl;
+    cout << "c. Multiplication" << endl;
+    cout << "d. Division" << endl;
+    cout << "q. Quit the program" << endl;
 
     int choice;
     bool valid = false;
