@@ -67,6 +67,7 @@ int main()
     cout << "Enter your answer here: ";
     cin >> answer;
     cin.clear();
+    cin.ignore(100, '\n');
     cout << endl;
 
     // Checks if user input is correct
