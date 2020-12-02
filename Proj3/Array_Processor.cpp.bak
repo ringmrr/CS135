@@ -1,0 +1,101 @@
+/*--------------------------------------------------------------------------------------------------
+FILENAME:           Array_Processor.cpp
+DESCRIPTION:        Project 3
+COMPILER:           MinGW C++ compiler
+NOTES:              
+
+MODIFICATION HISTORY:
+Author              Date            Version
+---------------     ----------      ---------------
+Michael Ring        2020-11-18      0.1 - Prepped folders/files
+Michael Ring        2020-11-23      0.2 - Prepping modular functions
+--------------------------------------------------------------------------------------------------*/
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+bool fileSelect();
+void intoArray();
+void sortData();
+void displayData();
+void histogram();
+void save();
+
+const string PROGRAMMER_NAME = "Michael Ring";
+
+/*--------------------------------------------------------------------------------------------------
+FUNCTION:           main()
+DESCRIPTION:        Say what this function does
+RETURNS:            0
+NOTES:              Optional notes on this function
+--------------------------------------------------------------------------------------------------*/
+int main()
+{
+    bool success = fileSelect();
+    if (success)
+    {
+        intoArray();
+        sortData();
+        displayData();
+        histogram();
+        save();
+    }
+
+    cout << endl;
+    cout << "Programmed by: " << PROGRAMMER_NAME << " -- ";
+    cout << __DATE__ << " " __TIME__ << endl;
+    system("pause");
+
+    return 0;
+}
+
+bool fileSelect()
+{
+    string fileName;
+
+    // Gets user selection
+    cout << "Input file: ";
+    getline (cin, fileName);
+
+    // Attempts to open selected file
+    ifstream infile;
+    infile.open(fileName);
+
+    // Allows program to continue if file opens successfully
+    if (infile)
+    {
+        return 1;
+    }
+    else
+        cout << "Could not open file. Please re-run the program." << endl;
+}
+
+void intoArray()
+{
+
+}
+
+void sortData()
+{
+
+}
+
+void displayData()
+{
+    int min, max, mode, total;
+    float avg, med, dev;
+}
+
+void histogram()
+{
+
+}
+
+void save()
+{
+
+}
